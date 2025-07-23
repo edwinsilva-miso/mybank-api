@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: mybank-postgres
+    environment:
+      POSTGRES_DB: mybank
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    networks:
+      - mybank-network
+
+  postgres-dev:
+    image: postgres:15-alpine
+    container_name: mybank-postgres-dev
+    environment:
+      POSTGRES_DB: mybank_dev
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+    networks:
+      - mybank-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: mybank-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - mybank-network
+
+volumes:
+  postgres_data:
+  postgres_dev_data:
+  redis_data:
+
+networks:
+  mybank-network:
+    driver: bridge 
