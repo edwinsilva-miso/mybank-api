@@ -73,11 +73,11 @@ mybank-api/
 
 ## 📚 Documentación
 
-- [SETUP.md](SETUP.md) — Guía de configuración y ejecución
-- [ARCHITECTURE.md](ARCHITECTURE.md) — Arquitectura y dominios
-- [TRANSACTION_DOMAIN.md](TRANSACTION_DOMAIN.md) — Lógica de transacciones
-- [TRANSACTION_AUDIT.md](TRANSACTION_AUDIT.md) — Auditoría de transacciones
-- [TESTING.md](TESTING.md) — Estrategia y guía de testing
+- [SETUP.md](doc/SETUP.md) — Guía de configuración y ejecución
+- [ARCHITECTURE.md](doc/ARCHITECTURE.md) — Arquitectura y dominios
+- [TRANSACTION_DOMAIN.md](doc/TRANSACTION_DOMAIN.md) — Lógica de transacciones
+- [TRANSACTION_AUDIT.md](doc/TRANSACTION_AUDIT.md) — Auditoría de transacciones
+- [TESTING.md](doc/TESTING.md) — Estrategia y guía de testing
 
 ## 🛠️ Contribución
 
