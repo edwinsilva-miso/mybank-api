@@ -44,14 +44,14 @@ public class CreateTransactionRequest {
                     throw new IllegalArgumentException("Account ID is required for " + type + " transactions");
                 }
                 break;
-            case TRANSFER:
-                if (sourceAccountId == null || destinationAccountId == null) {
-                    throw new IllegalArgumentException("Both source and destination account IDs are required for transfers");
-                }
-                if (sourceAccountId.equals(destinationAccountId)) {
-                    throw new IllegalArgumentException("Source and destination accounts cannot be the same");
-                }
-                break;
+            // case TRANSFER:
+            //     if (sourceAccountId == null || destinationAccountId == null) {
+            //         throw new IllegalArgumentException("Both source and destination account IDs are required for transfers");
+            //     }
+            //     if (sourceAccountId.equals(destinationAccountId)) {
+            //         throw new IllegalArgumentException("Source and destination accounts cannot be the same");
+            //     }
+            //     break;
             case PAYMENT:
                 if (accountId == null) {
                     throw new IllegalArgumentException("Account ID is required for payment transactions");

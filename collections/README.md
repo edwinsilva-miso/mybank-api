@@ -63,7 +63,7 @@ Este directorio contiene las colecciones de Postman para probar la API de MyBank
 - **Get Account Transactions** - Obtener transacciones de una cuenta
 - **Create Deposit Transaction** - Crear transacción de depósito
 - **Create Withdrawal Transaction** - Crear transacción de retiro
-- **Create Transfer Transaction** - Crear transacción de transferencia
+- **Create Transfer Transaction (DISABLED)** - Crear transacción de transferencia (NO IMPLEMENTADO)
 - **Process Transaction** - Procesar una transacción pendiente
 
 ### 6. Transaction Audit ⭐ (NUEVO)

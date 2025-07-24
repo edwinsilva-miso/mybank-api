@@ -31,6 +31,16 @@ public class JwtService {
         return extractClaim(token, Claims::getSubject);
     }
 
+    public Long extractUserId(String token) {
+        return extractClaim(token, claims -> {
+            Object userIdObj = claims.get("userId");
+            if (userIdObj instanceof Number) {
+                return ((Number) userIdObj).longValue();
+            }
+            return null;
+        });
+    }
+
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
@@ -41,8 +51,18 @@ public class JwtService {
     }
 
     public String generateToken(String username) {
+        return generateToken(username, null);
+    }
+
+    public String generateToken(String username, Long userId) {
+        Map<String, Object> claims = new HashMap<>();
+        if (userId != null) {
+            claims.put("userId", userId);
+        }
+        
         return Jwts
                 .builder()
+                .claims(claims)
                 .subject(username)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + jwtExpiration))

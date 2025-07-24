@@ -17,7 +17,7 @@ domains/transaction/
 ## 💸 Tipos de Transacciones
 - **DEPOSIT**: Ingreso de dinero
 - **WITHDRAWAL**: Retiro de dinero
-- **TRANSFER**: Movimiento entre cuentas
+- **TRANSFER**: Movimiento entre cuentas (NO IMPLEMENTADO - DESACTIVADO)
 - **PAYMENT**: Pago de servicios
 
 ## 🔄 Estados de Transacción
@@ -42,7 +42,7 @@ domains/transaction/
 
 ## 🛡️ Reglas de Negocio
 - Monto debe ser mayor a cero
-- Fondos suficientes para retiros/transferencias/pagos
+- Fondos suficientes para retiros/pagos (transferencias desactivadas)
 - Cuentas deben existir y estar activas
 - Solo transacciones PENDING pueden ser procesadas
 

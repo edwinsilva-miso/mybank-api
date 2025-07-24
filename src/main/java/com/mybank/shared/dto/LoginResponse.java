@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class LoginResponse {
     private String token;
     private String tokenType = "Bearer";
+    private Long userId;  // Nuevo campo para identificación del usuario
     private String username;
     private String email;
     private String firstName;

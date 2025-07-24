@@ -8,6 +8,7 @@ Este proyecto representa la **migración y modernización** del sistema bancario
 - **API funcional y validada**
 - **Pruebas unitarias y de integración exitosas**
 - **Scripts de validación final incluidos**: `final-fixed-test.sh`, `verification-after-adjustments.sh`
+- **Integración de userId completada**: `test-userid-integration.sh`
 - **Estructura limpia y optimizada**
 
 ## 🏗️ Arquitectura del Sistema
@@ -47,13 +48,13 @@ mybank-api/
 
 - **Autenticación**
   - `POST /api/v1/auth/register` - Registro
-  - `POST /api/v1/auth/login` - Login (JWT)
+  - `POST /api/v1/auth/login` - Login (JWT) - Incluye userId en respuesta
 - **Cuentas**
   - `POST /api/v1/accounts` - Crear cuenta
   - `GET /api/v1/accounts/{accountId}` - Obtener cuenta
   - `GET /api/v1/accounts/user/{userId}` - Cuentas de usuario
 - **Transacciones**
-  - `POST /api/v1/transactions` - Crear transacción
+  - `POST /api/v1/transactions` - Crear transacción (DEPOSIT, WITHDRAWAL, PAYMENT)
   - `POST /api/v1/transactions/{transactionId}/process` - Procesar transacción
   - `GET /api/v1/transactions/{transactionId}` - Obtener transacción
   - `GET /api/v1/transactions/user/{userId}` - Transacciones de usuario
@@ -68,6 +69,7 @@ mybank-api/
 - Ejecuta los scripts:
   - `./final-fixed-test.sh` — Valida todos los flujos principales y casos de error
   - `./verification-after-adjustments.sh` — Verificación rápida post-ajustes
+  - `./test-userid-integration.sh` — Valida integración de userId en login y operaciones
 - Pruebas unitarias: `./gradlew test`
 - Pruebas de integración: incluidas en los scripts y tests automáticos
 
@@ -78,6 +80,12 @@ mybank-api/
 - [TRANSACTION_DOMAIN.md](doc/TRANSACTION_DOMAIN.md) — Lógica de transacciones
 - [TRANSACTION_AUDIT.md](doc/TRANSACTION_AUDIT.md) — Auditoría de transacciones
 - [TESTING.md](doc/TESTING.md) — Estrategia y guía de testing
+
+## 🔍 API Documentation
+
+La documentación interactiva de la API está disponible en:
+- **Swagger UI**: http://localhost:8080/api/v1/swagger-ui.html
+- **OpenAPI JSON**: http://localhost:8080/api/v1/api-docs
 
 ## 🛠️ Contribución
 

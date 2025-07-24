@@ -113,7 +113,7 @@ public class Transaction {
     public enum TransactionType {
         DEPOSIT,           // Depósito
         WITHDRAWAL,        // Retiro
-        TRANSFER,          // Transferencia entre cuentas
+        // TRANSFER,          // Transferencia entre cuentas (NO IMPLEMENTADO)
         PAYMENT,           // Pago de servicios
         REFUND,           // Reembolso
         FEE_CHARGE        // Cargo por comisión

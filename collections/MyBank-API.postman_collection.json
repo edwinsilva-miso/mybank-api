@@ -549,7 +549,7 @@
 					"response": []
 				},
 				{
-					"name": "Create Transfer Transaction",
+					"name": "Create Transfer Transaction (DISABLED)",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -575,7 +575,7 @@
 								"transactions"
 							]
 						},
-						"description": "Crear una transacción de transferencia"
+						"description": "Crear una transacción de transferencia (NO IMPLEMENTADO - DESACTIVADO)"
 					},
 					"response": []
 				},

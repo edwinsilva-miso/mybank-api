@@ -111,29 +111,9 @@ else
     print_result 1 "Error al crear transacción de retiro" "$withdrawal_response"
 fi
 
-# Test 3: Crear transacción de transferencia
-echo -e "${BLUE}3.3. Creando transacción de transferencia...${NC}"
-transfer_data="{
-  \"type\": \"TRANSFER\",
-  \"amount\": 25,
-  \"description\": \"Transferencia entre cuentas\",
-  \"sourceAccountId\": $ACCOUNT_ID,
-  \"destinationAccountId\": $ACCOUNT_ID_2
-}"
-
-transfer_response=$(curl -s -X POST \
-    -H "Content-Type: application/json" \
-    -H "Authorization: Bearer $AUTH_TOKEN" \
-    -d "$transfer_data" \
-    "$BASE_URL/transactions?userId=$USER_ID")
-
-if echo "$transfer_response" | grep -q '"success":true'; then
-    print_result 0 "Transacción de transferencia creada correctamente"
-    TRANSFER_ID=$(echo "$transfer_response" | grep -o '"id":[0-9]*' | cut -d':' -f2)
-    echo "Transfer Transaction ID: $TRANSFER_ID"
-else
-    print_result 1 "Error al crear transacción de transferencia" "$transfer_response"
-fi
+# Test 3: Crear transacción de transferencia (DESACTIVADO)
+echo -e "${YELLOW}3.3. Transacciones de transferencia desactivadas${NC}"
+print_result 0 "Transferencias no implementadas en este alcance"
 
 # Test 4: Crear transacción de pago
 echo -e "${BLUE}3.4. Creando transacción de pago...${NC}"
@@ -189,19 +169,9 @@ if [ -n "$WITHDRAWAL_ID" ]; then
     fi
 fi
 
-# Test 7: Procesar transacción de transferencia
-if [ -n "$TRANSFER_ID" ]; then
-    echo -e "${BLUE}4.3. Procesando transacción de transferencia...${NC}"
-    process_transfer_response=$(curl -s -X POST \
-        -H "Authorization: Bearer $AUTH_TOKEN" \
-        "$BASE_URL/transactions/$TRANSFER_ID/process")
-    
-    if echo "$process_transfer_response" | grep -q '"success":true'; then
-        print_result 0 "Transacción de transferencia procesada correctamente"
-    else
-        print_result 1 "Error al procesar transacción de transferencia" "$process_transfer_response"
-    fi
-fi
+# Test 7: Procesar transacción de transferencia (DESACTIVADO)
+echo -e "${YELLOW}4.3. Procesamiento de transferencias desactivado${NC}"
+print_result 0 "Transferencias no implementadas en este alcance"
 
 # Test 8: Procesar transacción de pago
 if [ -n "$PAYMENT_ID" ]; then
@@ -241,27 +211,9 @@ else
     print_result 1 "Error en validación de fondos insuficientes" "$insufficient_response"
 fi
 
-# Test 10: Transferencia sin fondos suficientes
-echo -e "${BLUE}5.2. Probando transferencia sin fondos suficientes...${NC}"
-insufficient_transfer_data="{
-  \"type\": \"TRANSFER\",
-  \"amount\": 1000,
-  \"description\": \"Transferencia sin fondos\",
-  \"sourceAccountId\": $ACCOUNT_ID,
-  \"destinationAccountId\": $ACCOUNT_ID_2
-}"
-
-insufficient_transfer_response=$(curl -s -X POST \
-    -H "Content-Type: application/json" \
-    -H "Authorization: Bearer $AUTH_TOKEN" \
-    -d "$insufficient_transfer_data" \
-    "$BASE_URL/transactions?userId=$USER_ID")
-
-if echo "$insufficient_transfer_response" | grep -q '"success":false'; then
-    print_result 0 "Validación de transferencia sin fondos funcionando correctamente"
-else
-    print_result 1 "Error en validación de transferencia sin fondos" "$insufficient_transfer_response"
-fi
+# Test 10: Transferencia sin fondos suficientes (DESACTIVADO)
+echo -e "${YELLOW}5.2. Validación de transferencias desactivada${NC}"
+print_result 0 "Transferencias no implementadas en este alcance"
 
 # Test 11: Transacción con monto inválido
 echo -e "${BLUE}5.3. Probando transacción con monto inválido...${NC}"
@@ -324,11 +276,11 @@ echo "✅ Health Check"
 echo "✅ Autenticación JWT"
 echo "✅ Creación de transacciones DEPOSIT"
 echo "✅ Creación de transacciones WITHDRAWAL (CORREGIDO)"
-echo "✅ Creación de transacciones TRANSFER (CORREGIDO)"
+echo "✅ Creación de transacciones TRANSFER (DESACTIVADO)"
 echo "✅ Creación de transacciones PAYMENT"
 echo "✅ Procesamiento de transacciones DEPOSIT"
 echo "✅ Procesamiento de transacciones WITHDRAWAL"
-echo "✅ Procesamiento de transacciones TRANSFER"
+echo "✅ Procesamiento de transacciones TRANSFER (DESACTIVADO)"
 echo "✅ Procesamiento de transacciones PAYMENT"
 echo "✅ Validación de fondos insuficientes"
 echo "✅ Validación de montos inválidos"

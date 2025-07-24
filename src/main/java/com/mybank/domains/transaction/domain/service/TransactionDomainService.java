@@ -103,9 +103,9 @@ public class TransactionDomainService {
                 case WITHDRAWAL:
                     processWithdrawal(transaction);
                     break;
-                case TRANSFER:
-                    processTransfer(transaction);
-                    break;
+                // case TRANSFER:
+                //     processTransfer(transaction);
+                //     break;
                 case PAYMENT:
                     processPayment(transaction);
                     break;
@@ -185,9 +185,9 @@ public class TransactionDomainService {
             case WITHDRAWAL:
                 validateWithdrawalAmount(transaction);
                 break;
-            case TRANSFER:
-                validateTransferAmount(transaction);
-                break;
+            // case TRANSFER:
+            //     validateTransferAmount(transaction);
+            //     break;
             case PAYMENT:
                 validateWithdrawalAmount(transaction); // Los pagos también requieren fondos
                 break;
@@ -208,19 +208,19 @@ public class TransactionDomainService {
         }
     }
 
-    private void validateTransferAmount(Transaction transaction) {
-        Account sourceAccount = transaction.getSourceAccount();
-        if (sourceAccount == null) {
-            throw new BusinessException("Source account is required for transfer", "SOURCE_ACCOUNT_REQUIRED", "TRANSACTION");
-        }
+    // private void validateTransferAmount(Transaction transaction) {
+    //     Account sourceAccount = transaction.getSourceAccount();
+    //     if (sourceAccount == null) {
+    //         throw new BusinessException("Source account is required for transfer", "SOURCE_ACCOUNT_REQUIRED", "TRANSACTION");
+    //     }
 
-        Money currentBalance = new Money(sourceAccount.getBalance());
-        Money transferAmount = new Money(transaction.getTotalAmount());
+    //     Money currentBalance = new Money(sourceAccount.getBalance());
+    //     Money transferAmount = new Money(transaction.getTotalAmount());
 
-        if (transferAmount.isGreaterThan(currentBalance)) {
-            throw new BusinessException("Insufficient funds for transfer", "INSUFFICIENT_FUNDS", "TRANSACTION");
-        }
-    }
+    //     if (transferAmount.isGreaterThan(currentBalance)) {
+    //         throw new BusinessException("Insufficient funds for transfer", "INSUFFICIENT_FUNDS", "TRANSACTION");
+    //     }
+    // }
 
     private void validateUserAccountAccess(Transaction transaction) {
         User user = transaction.getUser();
@@ -282,50 +282,50 @@ public class TransactionDomainService {
         log.info("Withdrawal processed: Account {} balance updated to {}", account.getAccountNumber(), newBalance);
     }
 
-    private void processTransfer(Transaction transaction) {
-        Account sourceAccount = transaction.getSourceAccount();
-        Account destinationAccount = transaction.getDestinationAccount();
+    // private void processTransfer(Transaction transaction) {
+    //     Account sourceAccount = transaction.getSourceAccount();
+    //     Account destinationAccount = transaction.getDestinationAccount();
 
-        if (sourceAccount == null || destinationAccount == null) {
-            transactionAuditService.logValidationFailure(transaction, "Both source and destination accounts are required for transfer");
-            throw new BusinessException("Both source and destination accounts are required for transfer", "ACCOUNTS_REQUIRED", "TRANSACTION");
-        }
+    //     if (sourceAccount == null || destinationAccount == null) {
+    //         transactionAuditService.logValidationFailure(transaction, "Both source and destination accounts are required for transfer");
+    //         throw new BusinessException("Both source and destination accounts are required for transfer", "ACCOUNTS_REQUIRED", "TRANSACTION");
+    //     }
 
-        if (sourceAccount.getId().equals(destinationAccount.getId())) {
-            transactionAuditService.logValidationFailure(transaction, "Cannot transfer to the same account");
-            throw new BusinessException("Cannot transfer to the same account", "SAME_ACCOUNT_TRANSFER", "TRANSACTION");
-        }
+    //     if (sourceAccount.getId().equals(destinationAccount.getId())) {
+    //         transactionAuditService.logValidationFailure(transaction, "Cannot transfer to the same account");
+    //         throw new BusinessException("Cannot transfer to the same account", "SAME_ACCOUNT_TRANSFER", "TRANSACTION");
+    //     }
 
-        // Validar fondos nuevamente antes de procesar
-        try {
-            validateTransferAmount(transaction);
-        } catch (BusinessException e) {
-            transactionAuditService.logValidationFailure(transaction, e.getMessage());
-            throw e;
-        }
+    //     // Validar fondos nuevamente antes de procesar
+    //     try {
+    //         validateTransferAmount(transaction);
+    //     } catch (BusinessException e) {
+    //         transactionAuditService.logValidationFailure(transaction, e.getMessage());
+    //         throw e;
+    //     }
 
-        // Actualizar balances
-        BigDecimal sourceOldBalance = sourceAccount.getBalance();
-        BigDecimal destinationOldBalance = destinationAccount.getBalance();
-        BigDecimal sourceNewBalance = sourceAccount.getBalance().subtract(transaction.getTotalAmount());
-        BigDecimal destinationNewBalance = destinationAccount.getBalance().add(transaction.getAmount()); // Solo el monto principal, no las comisiones
+    //     // Actualizar balances
+    //     BigDecimal sourceOldBalance = sourceAccount.getBalance();
+    //     BigDecimal destinationOldBalance = destinationAccount.getBalance();
+    //     BigDecimal sourceNewBalance = sourceAccount.getBalance().subtract(transaction.getTotalAmount());
+    //     BigDecimal destinationNewBalance = destinationAccount.getBalance().add(transaction.getAmount()); // Solo el monto principal, no las comisiones
 
-        sourceAccount.setBalance(sourceNewBalance);
-        destinationAccount.setBalance(destinationNewBalance);
+    //     sourceAccount.setBalance(sourceNewBalance);
+    //     destinationAccount.setBalance(destinationNewBalance);
         
-        // Registrar auditoría de actualización de balances
-        transactionAuditService.logEvent(transaction, 
-                                       TransactionAudit.AuditEventType.BALANCE_UPDATED, 
-                                       String.format("Transfer processed: Source account %s balance updated from %s to %s, " +
-                                                   "Destination account %s balance updated from %s to %s", 
-                                                   sourceAccount.getAccountNumber(), sourceOldBalance, sourceNewBalance,
-                                                   destinationAccount.getAccountNumber(), destinationOldBalance, destinationNewBalance));
+    //     // Registrar auditoría de actualización de balances
+    //     transactionAuditService.logEvent(transaction, 
+    //                                    TransactionAudit.AuditEventType.BALANCE_UPDATED, 
+    //                                    String.format("Transfer processed: Source account %s balance updated from %s to %s, " +
+    //                                                "Destination account %s balance updated from %s to %s", 
+    //                                                sourceAccount.getAccountNumber(), sourceOldBalance, sourceNewBalance,
+    //                                                destinationAccount.getAccountNumber(), destinationOldBalance, destinationNewBalance));
         
-        log.info("Transfer processed: From {} to {}, amount: {}", 
-                sourceAccount.getAccountNumber(), 
-                destinationAccount.getAccountNumber(), 
-                transaction.getAmount());
-    }
+    //     log.info("Transfer processed: From {} to {}, amount: {}", 
+    //             sourceAccount.getAccountNumber(), 
+    //             destinationAccount.getAccountNumber(), 
+    //             transaction.getAmount());
+    // }
 
     private void processPayment(Transaction transaction) {
         Account account = transaction.getAccount();

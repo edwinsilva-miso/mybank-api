@@ -68,13 +68,14 @@ public class AuthController {
                 return ResponseEntity.badRequest().body(ApiResponse.error("Invalid username or password"));
             }
             
-            // Generar token JWT
-            String token = jwtService.generateToken(user.getUsername());
+            // Generar token JWT con userId incluido
+            String token = jwtService.generateToken(user.getUsername(), user.getId());
             
             // Crear respuesta
             LoginResponse loginResponse = new LoginResponse(
                     token,
                     "Bearer",
+                    user.getId(),  // Incluir userId en la respuesta
                     user.getUsername(),
                     user.getEmail(),
                     user.getFirstName(),

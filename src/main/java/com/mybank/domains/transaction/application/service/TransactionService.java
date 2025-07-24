@@ -144,19 +144,19 @@ public class TransactionService {
                 }
                 break;
 
-            case TRANSFER:
-                if (request.getSourceAccountId() != null) {
-                    Account sourceAccount = accountRepository.findById(request.getSourceAccountId())
-                            .orElseThrow(() -> new BusinessException("Source account not found", "SOURCE_ACCOUNT_NOT_FOUND", "TRANSACTION"));
-                    transaction.setSourceAccount(sourceAccount);
-                }
+            // case TRANSFER:
+            //     if (request.getSourceAccountId() != null) {
+            //         Account sourceAccount = accountRepository.findById(request.getSourceAccountId())
+            //                 .orElseThrow(() -> new BusinessException("Source account not found", "SOURCE_ACCOUNT_NOT_FOUND", "TRANSACTION"));
+            //         transaction.setSourceAccount(sourceAccount);
+            //     }
 
-                if (request.getDestinationAccountId() != null) {
-                    Account destinationAccount = accountRepository.findById(request.getDestinationAccountId())
-                            .orElseThrow(() -> new BusinessException("Destination account not found", "DESTINATION_ACCOUNT_NOT_FOUND", "TRANSACTION"));
-                    transaction.setDestinationAccount(destinationAccount);
-                }
-                break;
+            //     if (request.getDestinationAccountId() != null) {
+            //         Account destinationAccount = accountRepository.findById(request.getDestinationAccountId())
+            //                 .orElseThrow(() -> new BusinessException("Destination account not found", "DESTINATION_ACCOUNT_NOT_FOUND", "TRANSACTION"));
+            //         transaction.setDestinationAccount(destinationAccount);
+            //     }
+            //     break;
 
             default:
                 throw new BusinessException("Unsupported transaction type", "UNSUPPORTED_TRANSACTION_TYPE", "TRANSACTION");
