@@ -148,7 +148,10 @@ El proyecto incluye un pipeline de CI/CD con GitHub Actions que se ejecuta autom
 
 ### Configuración
 ```bash
-# Configurar secrets de GitHub
+# 1. Configurar permisos en GCP
+./setup-gcp-permissions.sh
+
+# 2. Configurar secrets de GitHub
 ./setup-github-secrets.sh
 ```
 

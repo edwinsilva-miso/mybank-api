@@ -33,6 +33,11 @@ echo "1️⃣ Configurando GCP_SA_KEY..."
 echo "   📝 Necesitas crear una clave de servicio en Google Cloud:"
 echo "   🔗 https://console.cloud.google.com/iam-admin/serviceaccounts"
 echo "   📋 Selecciona la cuenta de servicio y crea una nueva clave JSON"
+echo "   🔐 La cuenta de servicio debe tener estos roles:"
+echo "      - Cloud Run Admin"
+echo "      - Storage Admin"
+echo "      - Service Account User"
+echo "      - Cloud Build Service Account"
 echo ""
 
 read -p "   📄 Ruta al archivo JSON de la clave de servicio: " GCP_KEY_FILE
