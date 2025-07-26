@@ -11,7 +11,7 @@ API REST para un sistema bancario moderno desarrollado con Spring Boot 3, siguie
 - **Documentación**: OpenAPI/Swagger
 - **Migraciones**: Flyway
 - **Testing**: JUnit 5 + Mockito
-- **CI/CD**: GitHub Actions + Google Cloud Platform
+- **Despliegue**: Google Cloud Platform
 
 ## Estructura del Proyecto
 ```
@@ -39,7 +39,7 @@ src/
 - **Migraciones**: Flyway
 - **Testing**: JUnit 5, Mockito, TestContainers
 - **Build**: Gradle
-- **CI/CD**: GitHub Actions
+- **Despliegue**: Google Cloud Run
 - **Despliegue**: Google Cloud Run
 - **Container**: Docker
 
@@ -156,20 +156,15 @@ Los reportes de cobertura se generan en:
 ./deploy.sh
 ```
 
-### CI/CD Automático
-El proyecto incluye un pipeline de CI/CD con GitHub Actions que:
+### Despliegue Automático
+El proyecto incluye scripts de despliegue automatizado:
 1. **Build y Test**: Compila y ejecuta tests
-2. **Security Scan**: Escaneo de vulnerabilidades
-3. **Deploy**: Despliegue automático a Google Cloud Run
+2. **Deploy**: Despliegue a Google Cloud Run
 
-**Triggers**:
-- Push a `main` branch
-- Pull Requests a `main` branch
-
-### Configuración de Secrets
-Para que el CI/CD funcione, configurar estos secrets en GitHub:
-- `GCP_SA_KEY`: Clave de servicio de Google Cloud
-- `DB_PASSWORD`: Contraseña de la base de datos
+**Comandos**:
+- `./deploy.sh` - Despliegue manual
+- `./deployment/fix-cloudrun-port.sh` - Corrección de problemas
+- `./deployment/monitor-service.sh` - Monitoreo del servicio
 
 ## Estructura de Dominios
 
@@ -268,4 +263,4 @@ Este proyecto es parte del curso de Modernización de Software.
 **Versión**: 0.1.0
 **Estado**: En desarrollo activo
 
-<!-- CI/CD Trigger --> 
+<!-- Deployment Ready --> 
