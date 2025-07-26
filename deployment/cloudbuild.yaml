@@ -12,7 +12,7 @@ steps:
       - '-c'
       - |
         ls -la build/libs/
-        cp build/libs/workspace-0.1.0.jar app.jar
+        cp build/libs/mybank-api-0.1.0.jar app.jar
         echo "JAR copied successfully"
         ls -la app.jar
 
