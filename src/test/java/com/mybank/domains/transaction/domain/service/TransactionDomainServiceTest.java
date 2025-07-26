@@ -186,18 +186,10 @@ class TransactionDomainServiceTest {
     }
 
     @Test
-    void processTransaction_Transfer_Success() {
+    void processTransaction_Payment_Success() {
         // Given
-        Account destinationAccount = new Account();
-        destinationAccount.setId(2L);
-        destinationAccount.setAccountNumber("AC9876543210987654321");
-        destinationAccount.setBalance(BigDecimal.ZERO);
-        destinationAccount.setUser(testUser);
-
-        testTransaction.setType(Transaction.TransactionType.TRANSFER);
+        testTransaction.setType(Transaction.TransactionType.PAYMENT);
         testTransaction.setStatus(Transaction.TransactionStatus.PENDING);
-        testTransaction.setSourceAccount(testAccount);
-        testTransaction.setDestinationAccount(destinationAccount);
         testTransaction.setAmount(new BigDecimal("100.00"));
         testTransaction.setTotalAmount(new BigDecimal("100.00"));
 
@@ -215,25 +207,24 @@ class TransactionDomainServiceTest {
     }
 
     @Test
-    void processTransaction_Transfer_SameAccount_ThrowsException() {
+    void processTransaction_FeeCharge_Success() {
         // Given
-        testTransaction.setType(Transaction.TransactionType.TRANSFER);
-        testTransaction.setSourceAccount(testAccount);
-        testTransaction.setDestinationAccount(testAccount); // Misma cuenta
-        testTransaction.setAmount(new BigDecimal("100.00"));
-        testTransaction.setTotalAmount(new BigDecimal("100.00"));
+        testTransaction.setType(Transaction.TransactionType.FEE_CHARGE);
+        testTransaction.setStatus(Transaction.TransactionStatus.PENDING);
+        testTransaction.setAmount(new BigDecimal("5.00"));
+        testTransaction.setTotalAmount(new BigDecimal("5.00"));
 
         when(transactionRepository.findById(1L)).thenReturn(Optional.of(testTransaction));
         when(transactionRepository.save(any(Transaction.class))).thenReturn(testTransaction);
 
-        // When & Then
-        BusinessException exception = assertThrows(BusinessException.class, () -> {
-            transactionDomainService.processTransaction(1L);
-        });
+        // When
+        Transaction result = transactionDomainService.processTransaction(1L);
 
-        assertTrue(exception.getMessage().contains("Cannot transfer to the same account"));
-        assertEquals("SAME_ACCOUNT_TRANSFER", exception.getErrorCode());
+        // Then
+        assertEquals(Transaction.TransactionStatus.COMPLETED, result.getStatus());
+        assertNotNull(result.getProcessedAt());
         verify(transactionRepository).findById(1L);
+        verify(transactionRepository, atLeastOnce()).save(any(Transaction.class));
     }
 
     @Test

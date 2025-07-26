@@ -1,0 +1,5 @@
+JWT_SECRET: "bXliYW5rLXN1cGVyLXNlY3JldC1qd3Qta2V5LTIwMjQtcHJvZHVjdGlvbgo="
+DB_NAME: "mybank_db"
+DB_USER: "mybank_app"
+DB_PASSWORD: "MyBank2024!"
+DB_INSTANCE_CONNECTION_NAME: "mybank-467102:us-central1:mybank-postgres" 

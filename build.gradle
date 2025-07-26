@@ -3,12 +3,14 @@ plugins {
     id 'org.springframework.boot' version '3.3.0'
     id 'io.spring.dependency-management' version '1.1.6'
     id 'org.flywaydb.flyway' version '10.8.1'
+    id 'org.owasp.dependencycheck' version '8.4.3'
+    id 'jacoco' version '0.8.11'
 }
 
 group = 'com.mybank'
 version = '0.1.0'
-sourceCompatibility = '23'
-targetCompatibility = '23'
+sourceCompatibility = '21'
+targetCompatibility = '21'
 
 configurations {
     compileOnly {
@@ -32,6 +34,7 @@ dependencies {
     implementation 'org.postgresql:postgresql'
     implementation 'org.flywaydb:flyway-core'
     implementation 'org.flywaydb:flyway-database-postgresql'
+    implementation 'com.google.cloud.sql:postgres-socket-factory:1.15.2'
     
     // JWT
     implementation 'io.jsonwebtoken:jjwt-api:0.12.3'

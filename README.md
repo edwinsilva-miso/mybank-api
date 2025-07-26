@@ -31,8 +31,22 @@ mybank-api/
 │   │       ├── application.yml
 │   │       └── db/migration/
 │   └── test/                   # Pruebas unitarias e integración
+├── deployment/                 # 🚀 Archivos de despliegue en GCP
+│   ├── cloudbuild.yaml        # Configuración de Cloud Build
+│   ├── Dockerfile             # Configuración de Docker
+│   ├── env-vars.yaml          # Variables de entorno
+│   ├── deploy-gcp-fixed.sh    # Script de despliegue
+│   ├── MyBank-API.postman_collection.json # Colección de Postman
+│   ├── MyBank-API.postman_environment.json # Variables para desarrollo local
+│   ├── MyBank-API-Production.postman_environment.json # Variables para producción
+│   ├── POSTMAN_ENVIRONMENTS.md # Documentación de environments
+│   └── README.md              # Documentación de despliegue
 ├── final-fixed-test.sh         # Script de validación final
-├── verification-after-adjustments.sh # Script de verificación post-ajustes
+├── test-userid-integration.sh  # Script de testing específico
+├── deploy.sh                   # Script de conveniencia para despliegue
+├── setup-github-secrets.sh     # Configuración de secrets para CI/CD
+├── .github/workflows/          # 🚀 Pipeline de CI/CD
+│   └── ci-cd.yml              # Workflow principal
 ├── README.md
 ├── ARCHITECTURE.md
 ├── SETUP.md
@@ -72,6 +86,77 @@ mybank-api/
   - `./test-userid-integration.sh` — Valida integración de userId en login y operaciones
 - Pruebas unitarias: `./gradlew test`
 - Pruebas de integración: incluidas en los scripts y tests automáticos
+
+## 🚀 Despliegue en Producción
+
+### Despliegue en Google Cloud Platform
+
+El proyecto incluye configuración completa para despliegue en GCP Cloud Run con Cloud SQL.
+
+#### Archivos de Despliegue
+Todos los archivos de despliegue están organizados en el directorio `deployment/`:
+- **`deployment/cloudbuild.yaml`** — Configuración de Google Cloud Build
+- **`deployment/Dockerfile`** — Configuración de Docker
+- **`deployment/env-vars.yaml`** — Variables de entorno para producción
+- **`deployment/deploy-gcp-fixed.sh`** — Script de despliegue automatizado
+- **`deployment/MyBank-API.postman_collection.json`** — Colección de Postman para testing
+- **`deployment/MyBank-API.postman_environment.json`** — Variables para desarrollo local
+- **`deployment/MyBank-API-Production.postman_environment.json`** — Variables para producción
+
+#### Despliegue Rápido
+```bash
+# Desde el directorio raíz del proyecto
+./deploy.sh
+```
+
+#### Despliegue Manual
+```bash
+# Usar el script de despliegue directamente
+./deployment/deploy-gcp-fixed.sh
+
+# O usar Cloud Build manualmente
+gcloud builds submit --config deployment/cloudbuild.yaml .
+```
+
+#### Configuración Actual
+- **Proyecto GCP**: `mybank-467102`
+- **Región**: `us-central1`
+- **Servicio**: `mybank-api`
+- **URL**: https://mybank-api-7mxungdvxq-uc.a.run.app
+
+Para más detalles, consulta [deployment/README.md](deployment/README.md).
+
+#### Testing con Postman
+```bash
+# Importar la colección y environments de Postman
+# 1. Abre Postman
+# 2. Importa: deployment/MyBank-API.postman_collection.json
+# 3. Importa: deployment/MyBank-API.postman_environment.json (desarrollo local)
+# 4. Importa: deployment/MyBank-API-Production.postman_environment.json (producción)
+# 5. Selecciona el environment apropiado según el ambiente a probar
+```
+
+Para más detalles sobre los environments, consulta [deployment/POSTMAN_ENVIRONMENTS.md](deployment/POSTMAN_ENVIRONMENTS.md).
+
+## 🔄 CI/CD Pipeline
+
+### Despliegue Automático
+El proyecto incluye un pipeline de CI/CD con GitHub Actions que se ejecuta automáticamente:
+
+- **Push a `main`**: Build → Test → Deploy automático
+- **Pull Request**: Build → Test (sin deploy)
+
+### Configuración
+```bash
+# Configurar secrets de GitHub
+./setup-github-secrets.sh
+```
+
+### Secrets Requeridos
+- `GCP_SA_KEY`: Clave de servicio de Google Cloud
+- `DB_PASSWORD`: Contraseña de la base de datos
+
+Para más detalles, consulta [.github/README.md](.github/README.md).
 
 ## 📚 Documentación
 

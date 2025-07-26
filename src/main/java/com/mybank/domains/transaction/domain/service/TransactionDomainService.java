@@ -109,6 +109,12 @@ public class TransactionDomainService {
                 case PAYMENT:
                     processPayment(transaction);
                     break;
+                case FEE_CHARGE:
+                    processFeeCharge(transaction);
+                    break;
+                case REFUND:
+                    processRefund(transaction);
+                    break;
                 default:
                     transactionAuditService.logValidationFailure(transaction, "Unsupported transaction type: " + transaction.getType());
                     throw new BusinessException("Unsupported transaction type", "UNSUPPORTED_TRANSACTION_TYPE", "TRANSACTION");
@@ -341,5 +347,34 @@ public class TransactionDomainService {
         account.setBalance(newBalance);
         
         log.info("Payment processed: Account {} balance updated to {}", account.getAccountNumber(), newBalance);
+    }
+
+    private void processFeeCharge(Transaction transaction) {
+        Account account = transaction.getAccount();
+        if (account == null) {
+            throw new BusinessException("Account is required for fee charge", "ACCOUNT_REQUIRED", "TRANSACTION");
+        }
+
+        // Validar fondos
+        validateWithdrawalAmount(transaction);
+
+        // Actualizar balance de la cuenta
+        BigDecimal newBalance = account.getBalance().subtract(transaction.getTotalAmount());
+        account.setBalance(newBalance);
+        
+        log.info("Fee charge processed: Account {} balance updated to {}", account.getAccountNumber(), newBalance);
+    }
+
+    private void processRefund(Transaction transaction) {
+        Account account = transaction.getAccount();
+        if (account == null) {
+            throw new BusinessException("Account is required for refund", "ACCOUNT_REQUIRED", "TRANSACTION");
+        }
+
+        // Para reembolsos, agregamos el monto a la cuenta
+        BigDecimal newBalance = account.getBalance().add(transaction.getTotalAmount());
+        account.setBalance(newBalance);
+        
+        log.info("Refund processed: Account {} balance updated to {}", account.getAccountNumber(), newBalance);
     }
 } 

@@ -1,0 +1,21 @@
+# Excluir archivos innecesarios
+.gradle/
+build/
+!build/libs/
+!build/libs/*.jar
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Git
+.git/
+.gitignore 
