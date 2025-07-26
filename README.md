@@ -1,194 +1,271 @@
-# MyBank API - Proyecto de Modernización
+# MyBank API
 
-## 📋 Descripción del Proyecto
+## Descripción
+API REST para un sistema bancario moderno desarrollado con Spring Boot 3, siguiendo arquitectura hexagonal y principios DDD.
 
-Este proyecto representa la **migración y modernización** del sistema bancario legacy [Legacy_MyBank](https://github.com/edwinsilva-miso/Legacy_MyBank) hacia una arquitectura moderna basada en dominios y APIs REST.
+## Características
+- **Arquitectura**: Hexagonal (Puertos y Adaptadores) con DDD
+- **Framework**: Spring Boot 3.3.0
+- **Base de datos**: PostgreSQL 15
+- **Autenticación**: JWT
+- **Documentación**: OpenAPI/Swagger
+- **Migraciones**: Flyway
+- **Testing**: JUnit 5 + Mockito
+- **CI/CD**: GitHub Actions + Google Cloud Platform
 
-### 🎯 Estado Actual
-- **API funcional y validada**
-- **Pruebas unitarias y de integración exitosas**
-- **Scripts de validación final incluidos**: `final-fixed-test.sh`, `verification-after-adjustments.sh`
-- **Integración de userId completada**: `test-userid-integration.sh`
-- **Estructura limpia y optimizada**
-
-## 🏗️ Arquitectura del Sistema
-
-- **Backend**: Spring Boot 3.4.0, Java 23
-- **Base de Datos**: PostgreSQL 15 (Flyway para migraciones)
-- **Seguridad**: JWT, roles, cifrado
-- **Testing**: JUnit, Mockito, scripts bash de validación
-
-## 📂 Estructura del Proyecto (actual)
-
+## Estructura del Proyecto
 ```
-mybank-api/
-├── src/
-│   ├── main/
-│   │   ├── java/com/mybank/
-│   │   │   ├── domains/         # Dominios: user, account, transaction
-│   │   │   └── shared/         # Config, seguridad, utilidades
-│   │   └── resources/
-│   │       ├── application.yml
-│   │       └── db/migration/
-│   └── test/                   # Pruebas unitarias e integración
-├── deployment/                 # 🚀 Archivos de despliegue en GCP
-│   ├── cloudbuild.yaml        # Configuración de Cloud Build
-│   ├── Dockerfile             # Configuración de Docker
-│   ├── env-vars.yaml          # Variables de entorno
-│   ├── deploy-gcp-fixed.sh    # Script de despliegue
-│   ├── MyBank-API.postman_collection.json # Colección de Postman
-│   ├── MyBank-API.postman_environment.json # Variables para desarrollo local
-│   ├── MyBank-API-Production.postman_environment.json # Variables para producción
-│   ├── POSTMAN_ENVIRONMENTS.md # Documentación de environments
-│   └── README.md              # Documentación de despliegue
-├── final-fixed-test.sh         # Script de validación final
-├── test-userid-integration.sh  # Script de testing específico
-├── deploy.sh                   # Script de conveniencia para despliegue
-├── setup-github-secrets.sh     # Configuración de secrets para CI/CD
-├── .github/workflows/          # 🚀 Pipeline de CI/CD
-│   └── ci-cd.yml              # Workflow principal
-├── README.md
-├── ARCHITECTURE.md
-├── SETUP.md
-├── TESTING.md
-├── TRANSACTION_AUDIT.md
-├── TRANSACTION_DOMAIN.md
-├── build.gradle
-├── docker-compose.yml
-└── ...
+src/
+├── main/java/com/mybank/
+│   ├── domains/
+│   │   ├── account/          # Dominio de cuentas
+│   │   ├── transaction/      # Dominio de transacciones
+│   │   └── user/            # Dominio de usuarios
+│   ├── shared/              # Componentes compartidos
+│   └── MyBankApplication.java
+├── main/resources/
+│   ├── application.yml      # Configuración principal
+│   ├── application-dev.yml  # Configuración desarrollo
+│   └── db/migration/        # Migraciones Flyway
+└── test/                    # Tests unitarios e integración
 ```
 
-## 🚀 Endpoints Principales
+## Tecnologías
+- **Backend**: Spring Boot 3.3.0, Java 21
+- **Base de datos**: PostgreSQL 15
+- **ORM**: Spring Data JPA
+- **Autenticación**: JWT (JSON Web Tokens)
+- **Documentación**: OpenAPI 3.0
+- **Migraciones**: Flyway
+- **Testing**: JUnit 5, Mockito, TestContainers
+- **Build**: Gradle
+- **CI/CD**: GitHub Actions
+- **Despliegue**: Google Cloud Run
+- **Container**: Docker
 
-- **Autenticación**
-  - `POST /api/v1/auth/register` - Registro
-  - `POST /api/v1/auth/login` - Login (JWT) - Incluye userId en respuesta
-- **Cuentas**
-  - `POST /api/v1/accounts` - Crear cuenta
-  - `GET /api/v1/accounts/{accountId}` - Obtener cuenta
-  - `GET /api/v1/accounts/user/{userId}` - Cuentas de usuario
-- **Transacciones**
-  - `POST /api/v1/transactions` - Crear transacción (DEPOSIT, WITHDRAWAL, PAYMENT)
-  - `POST /api/v1/transactions/{transactionId}/process` - Procesar transacción
-  - `GET /api/v1/transactions/{transactionId}` - Obtener transacción
-  - `GET /api/v1/transactions/user/{userId}` - Transacciones de usuario
-- **Auditoría**
-  - `GET /api/v1/transactions/audit/transaction/{transactionId}`
-  - `GET /api/v1/transactions/audit/user/{userId}`
-- **Health**
-  - `GET /api/v1/health`
+## Configuración Local
 
-## 🧪 Validación y Testing
+### Prerrequisitos
+- Java 21
+- Docker y Docker Compose
+- Gradle (opcional, se incluye wrapper)
 
-- Ejecuta los scripts:
-  - `./final-fixed-test.sh` — Valida todos los flujos principales y casos de error
-  - `./verification-after-adjustments.sh` — Verificación rápida post-ajustes
-  - `./test-userid-integration.sh` — Valida integración de userId en login y operaciones
-- Pruebas unitarias: `./gradlew test`
-- Pruebas de integración: incluidas en los scripts y tests automáticos
+### Instalación
+1. **Clonar el repositorio**
+   ```bash
+   git clone <repository-url>
+   cd mybank-api
+   ```
 
-## 🚀 Despliegue en Producción
+2. **Configurar variables de entorno**
+   ```bash
+   cp env.example .env
+   # Editar .env con tus configuraciones
+   ```
 
-### Despliegue en Google Cloud Platform
+3. **Iniciar servicios con Docker Compose**
+   ```bash
+   docker-compose up -d
+   ```
 
-El proyecto incluye configuración completa para despliegue en GCP Cloud Run con Cloud SQL.
+4. **Ejecutar la aplicación**
+   ```bash
+   # Con Gradle Wrapper
+   ./gradlew bootRun
+   
+   # O con Java directamente
+   java -jar build/libs/mybank-api-0.1.0.jar
+   ```
 
-#### Archivos de Despliegue
-Todos los archivos de despliegue están organizados en el directorio `deployment/`:
-- **`deployment/cloudbuild.yaml`** — Configuración de Google Cloud Build
-- **`deployment/Dockerfile`** — Configuración de Docker
-- **`deployment/env-vars.yaml`** — Variables de entorno para producción
-- **`deployment/deploy-gcp-fixed.sh`** — Script de despliegue automatizado
-- **`deployment/MyBank-API.postman_collection.json`** — Colección de Postman para testing
-- **`deployment/MyBank-API.postman_environment.json`** — Variables para desarrollo local
-- **`deployment/MyBank-API-Production.postman_environment.json`** — Variables para producción
-
-#### Despliegue Rápido
+### Variables de Entorno
 ```bash
-# Desde el directorio raíz del proyecto
+# Base de datos
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=mybank_db
+DB_USER=mybank_app
+DB_PASSWORD=MyBank2024!
+
+# JWT
+JWT_SECRET=tu_jwt_secret_super_seguro
+
+# Perfil de Spring
+SPRING_PROFILES_ACTIVE=dev
+```
+
+## API Endpoints
+
+### Autenticación
+- `POST /api/v1/auth/register` - Registro de usuario
+- `POST /api/v1/auth/login` - Inicio de sesión
+
+### Usuarios
+- `GET /api/v1/users/{id}` - Obtener usuario por ID
+- `PUT /api/v1/users/{id}` - Actualizar usuario
+- `DELETE /api/v1/users/{id}` - Eliminar usuario
+
+### Cuentas
+- `POST /api/v1/accounts` - Crear cuenta
+- `GET /api/v1/accounts/{id}` - Obtener cuenta por ID
+- `PUT /api/v1/accounts/{id}` - Actualizar cuenta
+- `DELETE /api/v1/accounts/{id}` - Eliminar cuenta
+
+### Transacciones
+- `POST /api/v1/transactions?userId={userId}` - Crear transacción
+- `GET /api/v1/transactions/{id}` - Obtener transacción por ID
+- `GET /api/v1/transactions/user/{userId}` - Obtener transacciones por usuario
+- `GET /api/v1/transactions/account/{accountId}` - Obtener transacciones por cuenta
+
+### Auditoría
+- `GET /api/v1/transactions/audit/{transactionId}` - Obtener auditoría de transacción
+
+### Health Check
+- `GET /health` - Estado del servicio
+- `GET /actuator/health` - Health check detallado
+- `GET /actuator/info` - Información de la aplicación
+- `GET /actuator/metrics` - Métricas de la aplicación
+
+### Documentación
+- `GET /swagger-ui.html` - Interfaz Swagger UI
+- `GET /v3/api-docs` - Especificación OpenAPI
+
+## Testing
+
+### Ejecutar Tests
+```bash
+# Todos los tests
+./gradlew test
+
+# Tests específicos
+./gradlew test --tests "*TransactionDomainServiceTest*"
+
+# Con cobertura
+./gradlew test jacocoTestReport
+```
+
+### Cobertura de Código
+Los reportes de cobertura se generan en:
+- `build/reports/jacoco/test/html/index.html` (HTML)
+- `build/reports/jacoco/test/jacocoTestReport.xml` (XML)
+
+## Despliegue
+
+### Despliegue Manual
+```bash
+# Script de despliegue
 ./deploy.sh
 ```
 
-#### Despliegue Manual
-```bash
-# Usar el script de despliegue directamente
-./deployment/deploy-gcp-fixed.sh
+### CI/CD Automático
+El proyecto incluye un pipeline de CI/CD con GitHub Actions que:
+1. **Build y Test**: Compila y ejecuta tests
+2. **Security Scan**: Escaneo de vulnerabilidades
+3. **Deploy**: Despliegue automático a Google Cloud Run
 
-# O usar Cloud Build manualmente
-gcloud builds submit --config deployment/cloudbuild.yaml .
-```
+**Triggers**:
+- Push a `main` branch
+- Pull Requests a `main` branch
 
-#### Configuración Actual
-- **Proyecto GCP**: `mybank-467102`
-- **Región**: `us-central1`
-- **Servicio**: `mybank-api`
-- **URL**: https://mybank-api-7mxungdvxq-uc.a.run.app
-
-Para más detalles, consulta [deployment/README.md](deployment/README.md).
-
-#### Testing con Postman
-```bash
-# Importar la colección y environments de Postman
-# 1. Abre Postman
-# 2. Importa: deployment/MyBank-API.postman_collection.json
-# 3. Importa: deployment/MyBank-API.postman_environment.json (desarrollo local)
-# 4. Importa: deployment/MyBank-API-Production.postman_environment.json (producción)
-# 5. Selecciona el environment apropiado según el ambiente a probar
-```
-
-Para más detalles sobre los environments, consulta [deployment/POSTMAN_ENVIRONMENTS.md](deployment/POSTMAN_ENVIRONMENTS.md).
-
-## 🔄 CI/CD Pipeline
-
-### Despliegue Automático
-El proyecto incluye un pipeline de CI/CD con GitHub Actions que se ejecuta automáticamente:
-
-- **Push a `main`**: Build → Test → Deploy automático
-- **Pull Request**: Build → Test (sin deploy)
-
-### Configuración
-```bash
-# 1. Configurar permisos en GCP
-./setup-gcp-permissions.sh
-
-# 2. Configurar secrets de GitHub
-./setup-github-secrets.sh
-```
-
-### Secrets Requeridos
+### Configuración de Secrets
+Para que el CI/CD funcione, configurar estos secrets en GitHub:
 - `GCP_SA_KEY`: Clave de servicio de Google Cloud
 - `DB_PASSWORD`: Contraseña de la base de datos
 
-Para más detalles, consulta [.github/README.md](.github/README.md).
+## Estructura de Dominios
 
-## 📚 Documentación
+### Dominio de Usuario
+- **Entidad**: `User`
+- **Servicios**: `UserService`, `UserDomainService`
+- **Repositorios**: `UserRepository`
 
-- [SETUP.md](doc/SETUP.md) — Guía de configuración y ejecución
-- [ARCHITECTURE.md](doc/ARCHITECTURE.md) — Arquitectura y dominios
-- [TRANSACTION_DOMAIN.md](doc/TRANSACTION_DOMAIN.md) — Lógica de transacciones
-- [TRANSACTION_AUDIT.md](doc/TRANSACTION_AUDIT.md) — Auditoría de transacciones
-- [TESTING.md](doc/TESTING.md) — Estrategia y guía de testing
+### Dominio de Cuenta
+- **Entidad**: `Account`
+- **Servicios**: `AccountService`, `AccountDomainService`
+- **Repositorios**: `AccountRepository`
 
-## 🔍 API Documentation
+### Dominio de Transacción
+- **Entidad**: `Transaction`, `TransactionAudit`
+- **Servicios**: `TransactionService`, `TransactionDomainService`, `TransactionAuditService`
+- **Repositorios**: `TransactionRepository`, `TransactionAuditRepository`
+- **Value Objects**: `Money`
 
-La documentación interactiva de la API está disponible en:
-- **Swagger UI**: http://localhost:8080/api/v1/swagger-ui.html
-- **OpenAPI JSON**: http://localhost:8080/api/v1/api-docs
+## Arquitectura
 
-## 🛠️ Contribución
+### Principios DDD
+- **Entidades**: Objetos con identidad única
+- **Value Objects**: Objetos inmutables sin identidad
+- **Servicios de Dominio**: Lógica de negocio compleja
+- **Repositorios**: Abstracción de persistencia
 
-1. Fork del proyecto
-2. Crea una rama para tu feature
-3. Commit y push
-4. Pull Request
+### Arquitectura Hexagonal
+- **Puertos de Entrada**: Controllers REST
+- **Puertos de Salida**: Repositorios
+- **Adaptadores**: Implementaciones concretas
+- **Dominio**: Lógica de negocio pura
 
-## 🛡️ Licencia
+## Monitoreo y Observabilidad
 
-GPL-3.0 — ver [LICENSE](LICENSE)
+### Health Checks
+- `/health` - Estado básico del servicio
+- `/actuator/health` - Health check detallado con dependencias
 
-## 👤 Equipo
-- **Desarrollador Principal**: Edwin Silva
+### Métricas
+- `/actuator/metrics` - Métricas de la aplicación
+- `/actuator/env` - Variables de entorno
+
+### Logging
+- Logs estructurados en formato JSON
+- Niveles configurables por perfil
+
+## Seguridad
+
+### Autenticación JWT
+- Tokens con expiración configurable
+- Refresh tokens (futuro)
+- Blacklisting de tokens (futuro)
+
+### Validación de Entrada
+- Validación con Bean Validation
+- Sanitización de datos
+- Rate limiting (futuro)
+
+## Base de Datos
+
+### Migraciones
+Las migraciones se ejecutan automáticamente con Flyway:
+- `V1__Create_initial_tables.sql` - Tablas iniciales
+- `V3__Create_transactions_table.sql` - Tabla de transacciones
+- `V4__Create_transaction_audit_logs_table.sql` - Tabla de auditoría
+
+### Esquema
+- **Usuarios**: Información de usuarios del sistema
+- **Cuentas**: Cuentas bancarias asociadas a usuarios
+- **Transacciones**: Movimientos financieros
+- **Auditoría**: Log de cambios en transacciones
+
+## Contribución
+
+### Flujo de Trabajo
+1. Crear feature branch desde `main`
+2. Desarrollar funcionalidad
+3. Ejecutar tests y validaciones
+4. Crear Pull Request
+5. Revisión de código
+6. Merge a `main`
+
+### Estándares de Código
+- Java 21 features
+- Spring Boot best practices
+- Clean Code principles
+- Test coverage > 80%
+
+## Licencia
+Este proyecto es parte del curso de Modernización de Software.
 
 ---
 
-**Última actualización:** Julio 2025 
+**Última actualización**: Julio 2024
+**Versión**: 0.1.0
+**Estado**: En desarrollo activo
+
+<!-- CI/CD Trigger --> 
