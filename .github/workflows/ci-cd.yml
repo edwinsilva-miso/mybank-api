@@ -90,8 +90,8 @@ jobs:
       
     - name: Build and push Docker image
       run: |
-        # Copiar el JAR al directorio deployment
-        cp build/libs/mybank-api-0.1.0.jar deployment/app.jar
+        # Copiar el JAR al directorio raíz
+        cp build/libs/mybank-api-0.1.0.jar app.jar
         
         # Construir imagen Docker
         docker build -t ${{ env.IMAGE_NAME }}:${{ github.sha }} -f deployment/Dockerfile .
