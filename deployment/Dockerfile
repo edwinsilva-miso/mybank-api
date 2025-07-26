@@ -12,7 +12,7 @@ EXPOSE 8080
 
 # Configurar variables de entorno para producción
 ENV SPRING_PROFILES_ACTIVE=prod
-ENV SERVER_PORT=8080
+ENV PORT=8080
 
 # Comando para ejecutar la aplicación
 ENTRYPOINT ["java", "-jar", "app.jar"] 
